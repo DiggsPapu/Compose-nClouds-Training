@@ -1,0 +1,30 @@
+services:
+  database:
+    build: ./database
+    container_name: db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=cases123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - diggsyNetwork
+  
+  webapp:
+    build: ./webapp
+    container_name: webapp
+    ports:
+      - "80:80"
+    depends_on:
+      - database
+    networks:
+      - diggsyNetwork
+
+volumes:
+  db_data:
+
+networks:
+  diggsyNetwork:
+    driver: bridge
